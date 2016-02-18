@@ -495,6 +495,7 @@ func OpenStream(p StreamParameters, args ...interface{}) (*Stream, error) {
 
 	stream_size := (C.size_t)(unsafe.Sizeof(Stream{}))
 	s := (*Stream)(C.malloc(stream_size))
+	*s = Stream{}
 	err := s.init(p, args...)
 	if err != nil {
 		return nil, err
