@@ -709,13 +709,11 @@ func paStreamParameters(p StreamDeviceParameters, fmt C.PaSampleFormat) *C.PaStr
 }
 
 func (s *Stream) Close() error {
+	defer C.free(unsafe.Pointer(s))
 	if !s.closed {
 		s.closed = true
-		err := newError(C.Pa_CloseStream(s.paStream))
-		C.free(unsafe.Pointer(s))
-		return err
+		return newError(C.Pa_CloseStream(s.paStream))
 	}
-	C.free(unsafe.Pointer(s))
 	return nil
 }
 
